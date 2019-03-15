@@ -1,0 +1,25 @@
+How To Plugins
+--------------
+
+LOCAL PLUGINS
+
+Some times it's appropriate to have some plugins here, in /local/RealTimeMonitoringService/enabled
+These plugins run first in priority
+
+These are great, they don't require anything fancy. You can build quick and dirty PHP scripts that run with high efficiency. 
+Have a look at the examples.
+
+Simply move from disabled to enabled, and run the local plugin from your browser to see the result.
+
+
+PLUGIN HOOKS
+
+Inside your plugin, create a folder called RTMS (RealTimeMonitoringService), and place your PHP script there. It makes no difference where your code
+lives, in /local, or in /blocks/myCustomPlugin/RTMS
+
+But, placing it inside your existing plugin can allow you to retain private code repositories much more efficiently.
+
+
+-----
+
+Both options are provided to maximize useage of the RTMS system.

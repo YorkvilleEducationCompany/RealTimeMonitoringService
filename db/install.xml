@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/rtms/db" VERSION="2019000000" COMMENT="XMLDB file for Moodle local/rtms plugin"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    
+    <TABLE NAME="RTMS_courseQue" COMMENT="Adds all courses to the collection and assigns it a que ID">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="queChannel" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="timeAdded" TYPE="int" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="operation" UNIQUE="false" FIELDS="operation"/>
+      </INDEXES>
+    </TABLE>
+
+
+    <TABLE NAME="RTMS_courseQueLocks" COMMENT="Prevents course que from running twice in the same run">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="queChannel" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="status" TYPE="text" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="time" TYPE="int" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="event" UNIQUE="false" FIELDS="eventid"/>
+      </INDEXES>
+    </TABLE>
+
+
+  </TABLES>
+</XMLDB>

@@ -5,34 +5,34 @@
 >
   <TABLES>
     
-    <TABLE NAME="RTMS_courseQue" COMMENT="Adds all courses to the collection and assigns it a que ID">
+    <TABLE NAME="rtms_courseque" COMMENT="Adds all courses to the collection and assigns it a que ID">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="queChannel" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="quechannel" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
         <FIELD NAME="courseid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
-        <FIELD NAME="timeAdded" TYPE="int" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="timeadded" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="operation" UNIQUE="false" FIELDS="operation"/>
+        <INDEX NAME="id" UNIQUE="false" FIELDS="id"/>
       </INDEXES>
     </TABLE>
 
 
-    <TABLE NAME="RTMS_courseQueLocks" COMMENT="Prevents course que from running twice in the same run">
+    <TABLE NAME="rtms_coursequelocks" COMMENT="Prevents course que from running twice in the same run">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="queChannel" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="quechannel" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
         <FIELD NAME="status" TYPE="text" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
-        <FIELD NAME="time" TYPE="int" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="time" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="event" UNIQUE="false" FIELDS="eventid"/>
+        <INDEX NAME="id" UNIQUE="false" FIELDS="id"/>
       </INDEXES>
     </TABLE>
 

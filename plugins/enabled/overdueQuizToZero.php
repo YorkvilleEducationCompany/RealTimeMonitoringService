@@ -37,48 +37,47 @@ foreach($gradeItems as $gradeItem){
             //debugMessage ("p", var_dump($quiz) );
 
             if( (int)$quiz->timeclose > 0 && time() - (int)$quiz->timeclose >= 0 ){
-                debugMessage ("p", "OVERDUE QUIZ DETECTED");
-            }else{
-                debugMessage ("p", "Not overdue yet");
-            }
+               
+
+                debugMessage ("p", "Overdue Quiz Detected: ".$quiz->id.": ".$quiz->name);
+                foreach($students as $student){
+
+                    $giveOverdueQuizZeroGrade = "false";
+
+                    debugMessage ("p","STUDENT ID: ".$student);
+
+                    $grades = $DB->get_records_sql('SELECT * FROM mdl_grade_grades WHERE itemid='.$gradeItem->id.' AND userid='.$student, array(1));
+                    
+                    foreach($grades as $grade){
+                        debugMessage ("p", "GRADE FOUND:");
+
+                        debugMessage ("p", $grade);
+                        
+                        // Additional checks are required for some reason, a grade can be inserted as null?
+                        if( is_null($grade->rawgrade) && is_null($grade->finalgrade) && $grade->overridden == 0 ){
+                            debugMessage ("p","RAW AND FINAL GRADES ARE NULL WITH NO OVERRIDE, THUS WE SHALL PROCEED TO GRANT A ZERO.");
+                            
+                            $DB->execute('DELETE FROM mdl_grade_grades WHERE id='.$grade->id); // We must remove the old record
+                            $giveOverdueQuizZeroGrade = "true";
+                        }
 
 
-            debugMessage ("p", "Checking Student Quiz:");
-            foreach($students as $student){
-
-                $studentQuizFound = false;
-                debugMessage ("p","STUDENT ID: ".$student);
-
-                $grades = $DB->get_records_sql('SELECT * FROM mdl_grade_grades WHERE (itemid='.$gradeItem->id.' AND userid='.$student . ' AND finalgrade >= 0) OR (itemid='.$gradeItem->id.' AND userid='.$student . ' AND finalgrade = "0.0000") OR (itemid='.$gradeItem->id.' AND userid='.$student . ' AND finalgrade IS NULL) ', array(1));
-                foreach($grades as $grade){
-                    debugMessage ("p", "QUIZ FOUND:");
-
-                    debugMessage ("p", $grade);
-                    $studentQuizFound = true;
-                    // Additional check is required for some reason, a grade can be inserted as null?
-                    if(is_null($grade->finalgrade)){
-                        debugMessage ("p","WAS NULL");
-                        $DB->execute('DELETE FROM mdl_grade_grades WHERE id='.$grade->id);
-                        $studentQuizFound = false;
                     }
-                }
 
-                if($studentQuizFound == false){
+                    debugMessage ("h1","IS OVERDUE?: ".$giveOverdueQuizZeroGrade);
+                    if($giveOverdueQuizZeroGrade == "true"){
 
-                    // Make sure it's actually past due date
-                    if( (int)$quiz->timeclose > 0 && time() - (int)$quiz->timeclose >= 0 ){
-
-                        debugMessage ("p","QUIZ PAST DUE DATE, GIVE ZERO: ".$quiz->id." with student: ".$student);
+                        debugMessage ("p","ASSIGNING ZERO: ".$quiz->id." FOR STUDENT: ".$student);
 
                         $theGrade = new stdClass();
                         $theGrade->itemid = $gradeItem->id;
                         $theGrade->userid = $student;
                         $theGrade->usermodified = 2;
+                        $theGrade->rawgrade = floatval(0.00);
                         $theGrade->finalgrade = floatval(0.00);
                         $theGrade->aggregationstatus = "novalue";
                         $theGrade->overridden   = 1;
                         $theGrade->timemodified   = time();
-
 
                         $lastinsertid = $DB->insert_record('grade_grades', $theGrade, false);
 
@@ -94,11 +93,10 @@ foreach($gradeItems as $gradeItem){
 
                     }
 
-                }
 
+                }//foreach student
 
-
-            }
+            }// end if time passed
 
         }
 

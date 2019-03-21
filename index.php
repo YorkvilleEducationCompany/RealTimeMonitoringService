@@ -3,7 +3,7 @@
 // Load RTMS
 // ---------
 
-require_once("config.php");
+require_once("config_rtms.php");
 
 if($_GET['key'] != $KEY){
 	echo "invalid key";
@@ -96,7 +96,7 @@ foreach($quedCourses as $theCourse){
 		debugMessage ("p","COURSE FOUND, YOU MAY PROCEED");
 	}else{
 		debugMessage ("p","NO COURSE WAS FOUND -- THE COURSE WAS LIKELY DELETED BETWEEN REAL TIME CYCLE -- REMOVING FROM QUE");
-		$DB->execute('DELETE FROM rtms_courseque WHERE courseid='.$theCourse->courseid);
+		$DB->execute('DELETE FROM mdl_rtms_courseque WHERE courseid='.$theCourse->courseid);
 	}
 
 	foreach($courses as $course){

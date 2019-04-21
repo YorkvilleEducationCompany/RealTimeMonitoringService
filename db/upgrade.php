@@ -27,7 +27,7 @@
  * @param int $oldversion the version we are upgrading from
  * @return bool result
  */
-function xmldb_local_o365_upgrade($oldversion) {
+function xmldb_local_rtms_upgrade($oldversion) {
     global $DB, $USER, $SITE;
 
     $dbman = $DB->get_manager();

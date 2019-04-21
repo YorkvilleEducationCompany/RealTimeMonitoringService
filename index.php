@@ -3,12 +3,58 @@
 // Load RTMS
 // ---------
 
-require_once("config_rtms.php");
+require_once("../../config.php");
 
-if($_GET['key'] != $KEY){
-	echo "invalid key";
+//  Install as a Cron Job and run this as fast as possible
+//  There are internal braking methods to prevent a CPU overload
+//  To acheive "real time" performance, we try to run this file as fast as possible, at all times, forever!
+//
+//  # Moodle Real Time Scanner, must run every minute
+//  */1 * * * * wget -O - https://yourwebsite.com/local/RealTimeMonitoringService/?key=YOUR_WEB_KEY > /dev/null 2>&1
+
+
+$RtmsKey = get_config('local_rtms', 'key');
+$RtmsAmountToProcess = get_config('local_rtms', 'amountToProcess');
+
+$RtmsPlugin_plugin_NED_block = get_config('local_rtms', 'plugin_NED_block');
+$RtmsPlugin_plugin_YU_fixOverridenQuizzesk = get_config('local_rtms', 'plugin_NED_block');
+$RtmsPlugin_plugin_YU_overdueAssignmentsToZero = get_config('local_rtms', 'plugin_NED_block');
+
+echo "rtms processing: ".$RtmsAmountToProcess ;
+
+
+if($_GET['key'] != $RtmsKey){
+	echo "<h1>invalid key</h1>";
 	die();
 }
+
+function debugMessage($type, $message){
+
+	if($_GET['debugMessages'] == "true"){
+
+		if( is_string($message) ){
+			echo "<$type>$message</$type>";
+		}
+
+		if( is_object($message) ){
+			echo "<pre>";
+			var_dump($message);
+			echo "</pre>";
+		}
+
+
+	}
+
+	return false;
+
+}
+
+
+
+
+
+
+
 
 $startTime = microtime(true);
 
@@ -16,17 +62,16 @@ $startTime = microtime(true);
 // Start Moodle & Libraries
 // ------------------------
 
-require_once("../../config.php");
-require_once $CFG->libdir.'/gradelib.php';
-require_once $CFG->dirroot.'/grade/lib.php';
-require_once $CFG->dirroot.'/grade/report/lib.php';
+//require_once $CFG->libdir.'/gradelib.php';
+//require_once $CFG->dirroot.'/grade/lib.php';
+//require_once $CFG->dirroot.'/grade/report/lib.php';
 
-require_once $CFG->dirroot.'/mod/assign/externallib.php'; // New attempt to save external grades -- ONLY works for assignments darnit...
-$externalGrade = new mod_assign_external;
+//require_once $CFG->dirroot.'/mod/assign/externallib.php'; // New attempt to save external grades -- ONLY works for assignments darnit...
+//$externalGrade = new mod_assign_external;
 
-require_once $CFG->dirroot.'/mod/quiz/lib.php'; // Maybe we can pull directly from this lib?
+//require_once $CFG->dirroot.'/mod/quiz/lib.php'; // Maybe we can pull directly from this lib?
 
-global $USER, $DB;
+//global $USER, $DB;
 
 
 // RTMS Que Check & Build
@@ -83,7 +128,7 @@ debugMessage ("p","LOCKING CHANNEL!");
 debugMessage ("p",$theLockId);
 
 // BEGIN OVERDUE SCANNING
-$quedCourses = $DB->get_records_sql('SELECT * FROM mdl_rtms_courseque LIMIT 50', array(1));
+$quedCourses = $DB->get_records_sql('SELECT * FROM mdl_rtms_courseque LIMIT '.$RtmsAmountToProcess, array(1));
 debugMessage ("p","Processing: " );
 debugMessage ("p", count($quedCourses) );
 debugMessage ("p","===========================");
@@ -101,9 +146,21 @@ foreach($quedCourses as $theCourse){
 
 	foreach($courses as $course){
 
+		// no longer using the /plugins/enabled structure, let us run from a database
+		/*
 		foreach (glob("plugins/enabled/*.php") as $filename){
 		    include $filename;
 		}
+		*/
+
+		if($RtmsPlugin_plugin_NED_block == "1"){
+			include "plugins/NED_block.php";
+		}
+		if($RtmsPlugin_plugin_YU_overdueAssignmentsToZero == "1"){
+			include "plugins/YU_overdueAssignmentsToZero.php";
+		}
+
+		
 
 		debugMessage ("p","clearing qued course");
 		$DB->execute('DELETE FROM mdl_rtms_courseque WHERE courseid='.$course->id);

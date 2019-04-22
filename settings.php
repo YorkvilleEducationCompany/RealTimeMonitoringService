@@ -36,7 +36,7 @@ $RtmsKey = get_config('local_rtms', 'key');
 // RTMS Link
 $settings->add( new admin_setting_configempty('local_rtms/local_rtms',
         "RTMS URL",
-        "Test run:<hr /><a target='_blank' href='".$CFG->wwwroot."/local/rtms/?key=".$RtmsKey."'>".$CFG->wwwroot."/local/rtms/?KEY=".$RtmsKey."</a><hr /><a target='_blank' href='".$CFG->wwwroot."/local/rtms/?debugMessages=true&key=".$RtmsKey."'>".$CFG->wwwroot."/local/rtms/?KEY=".$RtmsKey."&debugMessages=true</a><hr />You must add a new cron job, separate to the regular Moodle cron, like this: <hr />*/1 * * * * wget -O - ".$CFG->wwwroot."/local/rtms/?key=".$RtmsKey." > /dev/null 2>&1<p><a target='_blank' href='/local/rtms/logs.php'>View RTMS Logs</a></p>"
+        "Test run:<hr /><a target='_blank' href='".$CFG->wwwroot."/local/rtms/?key=".$RtmsKey."'>".$CFG->wwwroot."/local/rtms/?KEY=".$RtmsKey."</a><hr /><a target='_blank' href='".$CFG->wwwroot."/local/rtms/?debugMessages=true&key=".$RtmsKey."'>".$CFG->wwwroot."/local/rtms/?KEY=".$RtmsKey."&debugMessages=true</a><hr />You must add a new cron job, separate to the regular Moodle cron, like this: <hr />*/1 * * * * wget -O - ".$CFG->wwwroot."/local/rtms/?key=".$RtmsKey." > /dev/null 2>&1<p><a target='_blank' href='".$CFG->wwwroot."/local/rtms/logs.php'>View RTMS Logs</a></p>"
     )
 );
 

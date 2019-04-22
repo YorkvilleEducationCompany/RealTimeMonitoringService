@@ -155,7 +155,7 @@ foreach($quedCourses as $theCourse){
 
 		if($RtmsPlugin_plugin_NED_block == "1"){
 			debugMessage ("p","RUNNING NED BLOCK");
-			require_once($_SERVER['DOCUMENT_ROOT']."/blocks/ned_teacher_tools/rtms/refresh_all_data.php");
+			require_once($CFG->dirroot."/blocks/ned_teacher_tools/rtms/refresh_all_data.php");
 		}
 		if($RtmsPlugin_plugin_YU_overdueAssignmentsToZero == "1"){
 			debugMessage ("p","YU Overdue Assignments");

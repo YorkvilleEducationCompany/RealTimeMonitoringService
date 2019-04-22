@@ -154,10 +154,12 @@ foreach($quedCourses as $theCourse){
 		*/
 
 		if($RtmsPlugin_plugin_NED_block == "1"){
-			include "plugins/NED_block.php";
+			debugMessage ("p","RUNNING NED BLOCK");
+			require_once($_SERVER['DOCUMENT_ROOT']."/blocks/ned_teacher_tools/rtms/refresh_all_data.php");
 		}
 		if($RtmsPlugin_plugin_YU_overdueAssignmentsToZero == "1"){
-			include "plugins/YU_overdueAssignmentsToZero.php";
+			debugMessage ("p","YU Overdue Assignments");
+			require_once("plugins/YU_overdueAssignmentsToZero.php");
 		}
 
 		
@@ -174,9 +176,24 @@ debugMessage ("p","clearing qued course:".$theLockId);
 $DB->execute('DELETE FROM mdl_rtms_coursequelocks WHERE id='.$theLockId);
 
 debugMessage ("p", '<hr />');
-debugMessage ("p", '<h1 style="color:green;">COMPLETED SUCCESSFULLY: '.(microtime(true) - $startTime).' seconds</h1>');
+debugMessage ("p", '<h1 style="color:green;">COMPLETED '.$RtmsAmountToProcess.' JOBS SUCCESSFULLY: '.(microtime(true) - $startTime).' seconds</h1>');
 
-echo "complete: ".(microtime(true) - $startTime)." seconds";
+$runtime = "".round( (microtime(true) - $startTime), 5);
+
+echo "completed $RtmsAmountToProcess jobs in: ".$runtime." seconds";
+
+
+// ADD LOG
+// ---------------
+$rtmsLog = new stdClass();
+$rtmsLog->time = time();
+$rtmsLog->runtime = $runtime;
+$rtmsLog->amount = $RtmsAmountToProcess;
+
+var_dump($rtmsLog);
+//$lastinsertid = $DB->insert_record('rtms_logs', $rtmsLog, false);
+$DB->execute("INSERT INTO {rtms_logs} (time, runtime, amount) VALUES ($rtmsLog->time, $rtmsLog->runtime, $rtmsLog->amount)");
+
 
 
 ?>

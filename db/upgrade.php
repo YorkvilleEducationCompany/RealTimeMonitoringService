@@ -33,14 +33,15 @@ function xmldb_local_rtms_upgrade($oldversion) {
     $dbman = $DB->get_manager();
     $result = true;
 
-    /*
-    if ($result && $oldversion < 2014111700) {
-        if (!$dbman->table_exists('local_o365_token')) {
-            $dbman->install_one_table_from_xmldb_file(__DIR__.'/install.xml', 'local_o365_token');
+    
+    if ($result && $oldversion < 2019000007) {
+        if (!$dbman->table_exists('rtms_logs')) {
+            $dbman->install_one_table_from_xmldb_file(__DIR__.'/install.xml', 'rtms_logs');
         }
-        upgrade_plugin_savepoint($result, '2014111700', 'local', 'o365');
+        upgrade_plugin_savepoint($result, '2019000007', 'local', 'o365');
     }
 
+    /*
     if ($result && $oldversion < 2014111702) {
         if (!$dbman->table_exists('local_o365_calsub')) {
             $dbman->install_one_table_from_xmldb_file(__DIR__.'/install.xml', 'local_o365_calsub');

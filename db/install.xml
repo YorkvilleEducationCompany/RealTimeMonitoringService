@@ -37,5 +37,21 @@
     </TABLE>
 
 
+    <TABLE NAME="rtms_logs" COMMENT="Simply logs the RTMS system">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="runtime" TYPE="varchar" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+        <FIELD NAME="amount" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="id" UNIQUE="false" FIELDS="id"/>
+      </INDEXES>
+    </TABLE>
+
+
   </TABLES>
 </XMLDB>

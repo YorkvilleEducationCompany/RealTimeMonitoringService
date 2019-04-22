@@ -23,7 +23,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2019000006;
+$plugin->version = 2019000007;
 $plugin->requires = 2017000000;
 $plugin->component = 'local_rtms';
 $plugin->maturity = MATURITY_STABLE;
